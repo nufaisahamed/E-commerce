@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+
+
+/* Light theme styles */
+.theme-light {
+    background-color: #ffffff;
+    color: #333333;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .theme-light .bg-gray-200 {
+    background-color: #e5e7eb;
+  }
+  
+  .theme-light .bg-transparent {
+    background-color: transparent;
+  }
+  
+  /* Dark theme styles */
+  .theme-dark {
+    background-color: #121212;
+    color: #ffffff;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .theme-dark .bg-gray-700 {
+    background-color: #374151;
+  }
+  
+  .theme-dark .text-white {
+    color: #ffffff;
+  }
+
+
+ 
