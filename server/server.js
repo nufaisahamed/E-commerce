@@ -18,7 +18,7 @@ const adminRoutes = require('./routes/adminRoutes');
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // your frontend URL
+    origin: "https://e-commerce-beryl-seven-27.vercel.app", // your frontend URL
     credentials: true, // this allows cookies to be sent/received
   })
 );
