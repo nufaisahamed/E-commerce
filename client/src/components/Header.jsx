@@ -45,6 +45,8 @@ const Header = () => {
     
   };
 
+  console.log(handleLogout);
+
   return (
     <header className="sticky top-0 z-50 bg-white shadow-md backdrop-filter backdrop-blur-lg bg-opacity-80">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
