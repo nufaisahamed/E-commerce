@@ -42,7 +42,7 @@ const Explore = () => {
     console.log(handleAddToCart);
 
   };
-
+  console.log(handleAddToCart);
 
   // Wishlist toggle
   const handleWishlistToggle = (product) => {
