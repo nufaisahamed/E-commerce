@@ -35,6 +35,7 @@ const About = ({ productId }) => {
     dispatch(addToCart(product));
     toast.success(`${product.name} added to cart`);
     navigate("/Cart")
+    console.log(handleAddToCart);
   };
 
 

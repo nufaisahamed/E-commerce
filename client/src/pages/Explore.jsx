@@ -39,7 +39,10 @@ const Explore = () => {
     dispatch(addToCart(product));
     toast.success(`${product.name} added to cart`);
     navigate("/Cart")
+    console.log(handleAddToCart);
+
   };
+
 
   // Wishlist toggle
   const handleWishlistToggle = (product) => {
