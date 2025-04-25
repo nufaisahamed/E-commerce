@@ -32,11 +32,11 @@ export default function LoginPage() {
           // secure: true,
           sameSite: 'Strict',
         });
-        Cookies.set('authToken', JSON.stringify(res.data.token), {
-          expires: 7,
-          // secure: true,
-          sameSite: 'Strict',
-        });
+        // Cookies.set('authToken', JSON.stringify(res.data.token), {
+        //   expires: 7,
+        //   // secure: true,
+        //   sameSite: 'Strict',
+        // });
         toast.success(res.data.message);
         navigate('/');
       })
