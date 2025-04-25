@@ -154,11 +154,13 @@ module.exports.login = async (req, res) => {
 
     // // Send the token in the cookie
     res.cookie("authToken", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 1000 * 60 * 60,
+      httpOnly: true,           // secure from JavaScript
+      secure: true,             // only over HTTPS
+      sameSite: "Lax",          // or "None" for cross-site
+      maxAge: 3600000,          // 1 hour
     });
+    res.status(200).json({ user });
+    
     
 
     res.status(200).json({
