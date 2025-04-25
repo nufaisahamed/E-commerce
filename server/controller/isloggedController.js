@@ -9,14 +9,25 @@ const isLoggedIn = async (req, res) => {
   }
 
   try {
+    // Verify the token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.userId).select("-password");
-    if (!user) {
+    
+    if (!decoded || !decoded.userId) {
       return res.status(401).json({ success: false, message: "Invalid token" });
     }
 
+    // Find the user associated with the token
+    const user = await User.findById(decoded.userId).select("-password");
+    
+    if (!user) {
+      return res.status(401).json({ success: false, message: "User not found" });
+    }
+
+    // Return user details (optionally, you can add additional fields like a refreshed token)
     return res.status(200).json({ success: true, user });
   } catch (error) {
+    // Handle errors like expired or invalid token
+    console.error("Token verification failed:", error);
     return res.status(401).json({ success: false, message: "Token expired or invalid" });
   }
 };
