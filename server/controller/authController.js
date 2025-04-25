@@ -154,11 +154,12 @@ module.exports.login = async (req, res) => {
 
     // // Send the token in the cookie
     res.cookie("authToken", token, {
-      secure: true, // set to true if using https in production
+      httpOnly: true,
+      secure: true,
       sameSite: "none",
-      maxAge: 1000 * 60 * 60, // 1 hour
-      httpOnly:true
+      maxAge: 1000 * 60 * 60,
     });
+    
 
     res.status(200).json({
       message: "Login success",
