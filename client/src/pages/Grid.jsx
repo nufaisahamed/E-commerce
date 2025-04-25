@@ -16,7 +16,7 @@ const Grid = () => {
         const uniqueCategories = [...new Set(response.data.products.map(item => item.category))];
         setCategories(uniqueCategories.slice(0, 4)); // Take only first 4 categories
       } catch (error) {
-        console.error("error fetching product", error);
+        console.error("Error fetching product", error);
       }
     };
     fetchPrd();
@@ -30,33 +30,44 @@ const Grid = () => {
         </h1>
       </div>
       
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {categories.map((category, index) => {
-          // Find the first product in this category
           const firstProductInCategory = product.find(
             (item) => item.category === category
           );
           
           return firstProductInCategory ? (
-            <div 
+            <Link
               key={index}
-              className="relative rounded-xl overflow-hidden shadow-xl transition-all duration-300 transform hover:scale-105 group bg-pink-500"
+              to={`/Explore?category=${category.toLowerCase()}`}
+              className="block overflow-hidden bg-white dark:bg-gray-800 rounded-lg transition-all duration-300 group hover:shadow-xl"
             >
-              <img 
-                src={firstProductInCategory.image} 
-                alt={category} 
-                className="w-fit h-64 object-left-top  group-hover:opacity-90 transition-all duration-300 " 
-              />
-              
-              <div className="absolute inset-x-0 bottom-0 bg-white dark:bg-gray-800 flex items-center justify-center py-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                <Link 
-                  to={`/Explore?category=${category.toLowerCase()}`} 
-                  className="font-semibold text-gray-800 dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
-                >
+              <div className="relative">
+                <div className="aspect-square overflow-hidden">
+                  <img
+                    src={firstProductInCategory.image}
+                    alt={category}
+                    className="w-full h-full object-center transition-transform duration-700 group-hover:scale-110"
+                  />
+                </div>
+                <div className="absolute top-4 right-4 bg-white dark:bg-gray-800 text-gray-800 dark:text-white text-xs font-medium px-2 py-1 rounded">
                   {category}
-                </Link>
+                </div>
               </div>
-            </div>
+              
+              <div className="p-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+                    {category}
+                  </h3>
+                  <span className="text-sm text-blue-600 dark:text-blue-400 opacity-0 transform translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                    Explore →
+                  </span>
+                </div>
+                
+                <div className="w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300 mt-2"></div>
+              </div>
+            </Link>
           ) : null;
         })}
       </div>
