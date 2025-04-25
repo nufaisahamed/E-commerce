@@ -1,41 +1,16 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axiosInstance from "../config/axiosConfig";
-import toast from "react-hot-toast";
-import Cookies from "js-cookie"; // Import js-cookie
+// LoginPage.js
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axiosInstance from '../config/axiosConfig';
+import toast from 'react-hot-toast';
+import Cookies from 'js-cookie';
 
 export default function LoginPage() {
   const [formValues, setFormValues] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Check if the user is already logged in
-    const checkLoginStatus = async () => {
-      const token = localStorage.getItem("authToken");
-
-      if (!token) return;
-
-      try {
-        const res = await axiosInstance.get("isLoggedIn", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (res.status === 200) {
-          // User is already logged in, redirect to home page
-          navigate("/");
-        }
-      } catch (err) {
-        console.error("Not logged in or token expired", err);
-      }
-    };
-
-    checkLoginStatus();
-  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,28 +20,28 @@ export default function LoginPage() {
     });
   };
 
+
   const handleLogin = (e) => {
     e.preventDefault();
-
+    
     axiosInstance
-      .post("/login", formValues)
+      .post('/login', formValues)
       .then((res) => {
-        // Store the auth token in localStorage (or wherever you prefer)
-        localStorage.setItem("authToken", res.data.token);
-
-        // Store user data in cookies (expires in 7 days)
         Cookies.set('user', JSON.stringify(res.data.user), {
           expires: 7,
           // secure: true,
           sameSite: 'Strict',
         });
+        
         toast.success(res.data.message);
-        navigate("/"); // Redirect to homepage after login
+        navigate('/');
       })
       .catch((err) => {
-        toast.error(err.response?.data?.message || "Login failed");
+        toast.error(err.response?.data?.message || 'Login failed');
       });
   };
+
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">

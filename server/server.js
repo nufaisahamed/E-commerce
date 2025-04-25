@@ -13,7 +13,7 @@ const createOrder = require("./routes/paymentRoues");
 const cookieParser = require("cookie-parser");
 const { upload } = require("./controller/uploadController");
 const adminRoutes = require('./routes/adminRoutes');
-const isLogged = require("./routes/isloggedRoutes");
+
 
 
 
@@ -38,7 +38,7 @@ app.use(uploadRoutes);
 app.use(cartRoutes);
 app.use(createOrder);
 app.use( adminRoutes);
-app.use(isLogged);
+
 
 
 app.listen(process.env.PORT, () => {
