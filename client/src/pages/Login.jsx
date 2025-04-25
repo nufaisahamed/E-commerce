@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../config/axiosConfig";
 import toast from "react-hot-toast";
-
+import Cookies from "js-cookie"; // Import js-cookie
 
 export default function LoginPage() {
   const [formValues, setFormValues] = useState({
@@ -15,7 +15,7 @@ export default function LoginPage() {
     // Check if the user is already logged in
     const checkLoginStatus = async () => {
       const token = localStorage.getItem("authToken");
-      
+
       if (!token) return;
 
       try {
@@ -53,6 +53,12 @@ export default function LoginPage() {
       .then((res) => {
         // Store the auth token in localStorage (or wherever you prefer)
         localStorage.setItem("authToken", res.data.token);
+
+        // Store user data in cookies (expires in 7 days)
+        Cookies.set("user", JSON.stringify(res.data.user), {
+          expires: 7,
+          sameSite: "Strict", // secure: true, if you are using HTTPS
+        });
 
         toast.success(res.data.message);
         navigate("/"); // Redirect to homepage after login
