@@ -25,6 +25,7 @@ const Explore = () => {
   // Auth check function
   const handleAuth = () => {
     const token = Cookies.get("authToken");
+    console.log(token);
     if (!token) {
       toast.error("Please login to continue");
       navigate("/login");
