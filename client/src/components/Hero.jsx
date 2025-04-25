@@ -182,7 +182,7 @@ const Hero = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 ">
             {[0, 1, 2, 3].map((offset) => {
               if (products.length === 0) return null;
               const index = (productIndex + offset) % products.length;
