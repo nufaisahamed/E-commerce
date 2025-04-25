@@ -55,12 +55,11 @@ export default function LoginPage() {
         localStorage.setItem("authToken", res.data.token);
 
         // Store user data in cookies (expires in 7 days)
-        Cookies.set("user", JSON.stringify(res.data.user), {
+        Cookies.set('user', JSON.stringify(res.data.user), {
           expires: 7,
-          sameSite: "Strict", 
-          secure: true, //if you are using HTTPS
+          // secure: true,
+          sameSite: 'Strict',
         });
-
         toast.success(res.data.message);
         navigate("/"); // Redirect to homepage after login
       })
