@@ -152,12 +152,12 @@ module.exports.login = async (req, res) => {
       expiresIn: "1h",
     });
 
-    // Send the token in the cookie
-    res.cookie("authToken", token, {
-      secure: false, // set to true if using https in production
-      sameSite: "none",
-      maxAge: 1000 * 60 * 60, // 1 hour
-    });
+    // // Send the token in the cookie
+    // res.cookie("authToken", token, {
+    //   secure: false, // set to true if using https in production
+    //   sameSite: "none",
+    //   maxAge: 1000 * 60 * 60, // 1 hour
+    // });
 
     res.status(200).json({
       message: "Login success",
