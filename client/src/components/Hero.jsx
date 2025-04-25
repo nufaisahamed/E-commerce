@@ -88,14 +88,12 @@ const Hero = () => {
   return (
     <div className="relative overflow-hidden">
       {/* HERO SECTION */}
-      
       <div
         className={` w-full min-h-[70vh] flex items-center relative ${currentSlide.bgColor}`}
         style={{
           backgroundImage: `url(${currentSlide.backimage})`,
-          backgroundSize: "fit",
+          backgroundSize: "cover", // Ensures the image covers the area
           backgroundPosition: "center",
-          
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/30" />
@@ -132,6 +130,7 @@ const Hero = () => {
           </div>
         </div>
       </div>
+
       {/* PRODUCT CAROUSEL */}
       <div className="relative py-16 bg-gray-50">
         <div className="container mx-auto px-4">
@@ -181,7 +180,7 @@ const Hero = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6">
             {[0, 1, 2, 3].map((offset) => {
               if (products.length === 0) return null;
               const index = (productIndex + offset) % products.length;
@@ -195,11 +194,8 @@ const Hero = () => {
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="w-[294px] h-auto object-fill"
+                      className="w-full h-[400px] object-center" // Maintain aspect ratio for images
                     />
-                    <div className="absolute bottom-4 right-4 bg-pink-600 text-white px-3 py-1 rounded-full text-sm font-bold">
-                      {product.discount}
-                    </div>
                   </div>
                   <div className="p-5">
                     <h3 className="text-xl font-semibold text-gray-900 mb-1">
@@ -208,7 +204,7 @@ const Hero = () => {
                     <p className="text-gray-500 text-sm">{product.brand}</p>
                     <div className="flex justify-between items-center mt-4">
                       <p className="text-xl font-bold text-gray-900">
-                      ₹{product.price}
+                        ₹{product.price}
                       </p>
                       <span className="text-green-600 font-medium">
                         {product.discount}
