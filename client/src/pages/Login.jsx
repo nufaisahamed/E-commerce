@@ -32,7 +32,7 @@ export default function LoginPage() {
           // secure: true,
           sameSite: 'Strict',
         });
-        Cookies.set('user', JSON.stringify(res.data.token), {
+        Cookies.set('authToken', JSON.stringify(res.data.token), {
           expires: 7,
           // secure: true,
           sameSite: 'Strict',
