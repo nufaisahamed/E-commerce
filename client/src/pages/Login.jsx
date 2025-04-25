@@ -57,7 +57,8 @@ export default function LoginPage() {
         // Store user data in cookies (expires in 7 days)
         Cookies.set("user", JSON.stringify(res.data.user), {
           expires: 7,
-          sameSite: "Strict", // secure: true, if you are using HTTPS
+          sameSite: "Strict", 
+          secure: true, //if you are using HTTPS
         });
 
         toast.success(res.data.message);
