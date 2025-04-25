@@ -132,7 +132,8 @@ const Hero = () => {
           </div>
         </div>
       </div>
-      {/* PRODUCT CAROUSEL */}
+       
+       {/* carousel */}
       <div className="relative py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-10">
