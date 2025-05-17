@@ -73,7 +73,7 @@ module.exports.login = async (req, res) => {
     // Send the token in the cookie
     res.cookie("authToken", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Use true in production
+      secure: true,  // Use true in production
       sameSite: "Lax",
       maxAge: 1000 * 60 * 60, // 1 hour
     });
