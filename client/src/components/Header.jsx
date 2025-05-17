@@ -13,6 +13,7 @@ import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 import { clearCart } from "../features/cartSlice";
 import { clearWishlist } from "../features/WishSlice";
+import { logout } from "../features/authSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -29,23 +30,20 @@ const Header = () => {
   const wishlistItems = useSelector((state) => state.wishlist.items);
   const wishlistCount = wishlistItems.length;
 
-  const user = Cookies.get("user") ? JSON.parse(Cookies.get("user")) : null;
+  // const user = Cookies.get("user") ? JSON.parse(Cookies.get("user")) : null;
+  const { user } = useSelector((state) => state.auth);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleSearch = () => setIsSearchOpen(!isSearchOpen);
 
   const handleLogout = () => {
-    Cookies.remove("authToken");
-    Cookies.remove("user");
-    setShowProfileDropdown(false);
-    toast.success("Logged out successfully");
+    console.log("from logout");
+    dispatch(logout());
+    // toast.success("Logged out successfully");
     navigate("/login");
-    dispatch(clearCart()); 
-    dispatch(clearWishlist());
-    
+    // dispatch(clearCart());
+    // dispatch(clearWishlist());
   };
-
-  console.log(handleLogout);
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-md backdrop-filter backdrop-blur-lg bg-opacity-80">
@@ -57,15 +55,43 @@ const Header = () => {
         </div>
 
         <div className="hidden lg:flex flex-row items-center justify-center px-4 py-2 space-x-6">
-          <Link to="/explore?category=men" className="px-3 py-1 rounded hover:text-blue-500 text-gray-800 transition-colors hover:bg-gray-400">MEN</Link>
-          <Link to="/explore?category=women" className="px-3 py-1 rounded hover:text-blue-500 text-gray-800 transition-colors">WOMEN</Link>
-          <Link to="/explore?category=kids" className="px-3 py-1 rounded hover:text-blue-500 text-gray-800 transition-colors">KIDS</Link>
-          <Link to="/explore?category=unisex" className="px-3 py-1 rounded hover:text-blue-500 text-gray-800 transition-colors">UNISEX</Link>
-          <Link to="/beauty" className="px-3 py-1 rounded hover:text-blue-500 text-gray-800 transition-colors">BEAUTY</Link>
+          <Link
+            to="/explore?category=men"
+            className="px-3 py-1 rounded hover:text-blue-500 text-gray-800 transition-colors hover:bg-gray-400"
+          >
+            MEN
+          </Link>
+          <Link
+            to="/explore?category=women"
+            className="px-3 py-1 rounded hover:text-blue-500 text-gray-800 transition-colors"
+          >
+            WOMEN
+          </Link>
+          <Link
+            to="/explore?category=kids"
+            className="px-3 py-1 rounded hover:text-blue-500 text-gray-800 transition-colors"
+          >
+            KIDS
+          </Link>
+          <Link
+            to="/explore?category=unisex"
+            className="px-3 py-1 rounded hover:text-blue-500 text-gray-800 transition-colors"
+          >
+            UNISEX
+          </Link>
+          <Link
+            to="/beauty"
+            className="px-3 py-1 rounded hover:text-blue-500 text-gray-800 transition-colors"
+          >
+            BEAUTY
+          </Link>
         </div>
 
         <div className="flex items-center gap-4 relative">
-          <button onClick={toggleSearch} className="text-gray-600 hover:text-blue-500 p-2 rounded-full transition-colors">
+          <button
+            onClick={toggleSearch}
+            className="text-gray-600 hover:text-blue-500 p-2 rounded-full transition-colors"
+          >
             <FaSearch size={20} />
           </button>
 
@@ -91,7 +117,10 @@ const Header = () => {
             </button>
           </Link>
 
-          <button onClick={toggleMenu} className="lg:hidden text-gray-600 hover:text-gray-800 p-2 rounded-full transition-colors">
+          <button
+            onClick={toggleMenu}
+            className="lg:hidden text-gray-600 hover:text-gray-800 p-2 rounded-full transition-colors"
+          >
             {!isMenuOpen ? <FaBars size={20} /> : <FaTimes size={20} />}
           </button>
 
@@ -113,13 +142,21 @@ const Header = () => {
                       {user.fullname.charAt(0).toUpperCase()}
                     </div>
                   )}
-                  <span className="text-gray-800 font-medium">Hi, {user.fullname.split(" ")[0]}</span>
+                  <span className="text-gray-800 font-medium">
+                    Hi, {user.fullname.split(" ")[0]}
+                  </span>
                 </div>
 
                 {showProfileDropdown && (
                   <div className="absolute right-0 mt-2 w-52 bg-white shadow-md rounded-lg p-4 z-50">
-                    <img src={user.avatar} alt="" className="h-[150px] w-[180px]" />
-                    <p className="text-sm font-medium text-gray-800">{user.fullname}</p>
+                    <img
+                      src={user.avatar}
+                      alt=""
+                      className="h-[150px] w-[180px]"
+                    />
+                    <p className="text-sm font-medium text-gray-800">
+                      {user.fullname}
+                    </p>
                     <p className="text-sm text-gray-500 mb-2">{user.email}</p>
                     <hr className="my-2" />
                     <button
@@ -164,7 +201,9 @@ const Header = () => {
           <div className="flex justify-between items-center mb-4">
             {user ? (
               <>
-                <span className="text-gray-800 font-medium">Hi, {user.fullname.split(" ")[0]}</span>
+                <span className="text-gray-800 font-medium">
+                  Hi, {user.fullname.split(" ")[0]}
+                </span>
                 <button
                   onClick={handleLogout}
                   className="border px-3 py-1 rounded-2xl text-gray-800 hover:bg-gray-100 transition-colors"
@@ -189,11 +228,36 @@ const Header = () => {
           </div>
 
           <div className="mt-4 space-y-2">
-            <Link to="/explore?category=men" className="block w-full px-3 py-1 rounded text-gray-800 hover:text-blue-500 transition-colors">MEN</Link>
-            <Link to="/explore?category=women" className="block w-full px-3 py-1 rounded text-gray-800 hover:text-blue-500 transition-colors">WOMEN</Link>
-            <Link to="/explore?category=kids" className="block w-full px-3 py-1 rounded text-gray-800 hover:text-blue-500 transition-colors">KIDS</Link>
-            <Link to="/explore?category=unisex" className="block w-full px-3 py-1 rounded text-gray-800 hover:text-blue-500 transition-colors">UNISEX</Link>
-            <Link to="/beauty" className="block w-full px-3 py-1 rounded text-gray-800 hover:text-blue-500 transition-colors">BEAUTY</Link>
+            <Link
+              to="/explore?category=men"
+              className="block w-full px-3 py-1 rounded text-gray-800 hover:text-blue-500 transition-colors"
+            >
+              MEN
+            </Link>
+            <Link
+              to="/explore?category=women"
+              className="block w-full px-3 py-1 rounded text-gray-800 hover:text-blue-500 transition-colors"
+            >
+              WOMEN
+            </Link>
+            <Link
+              to="/explore?category=kids"
+              className="block w-full px-3 py-1 rounded text-gray-800 hover:text-blue-500 transition-colors"
+            >
+              KIDS
+            </Link>
+            <Link
+              to="/explore?category=unisex"
+              className="block w-full px-3 py-1 rounded text-gray-800 hover:text-blue-500 transition-colors"
+            >
+              UNISEX
+            </Link>
+            <Link
+              to="/beauty"
+              className="block w-full px-3 py-1 rounded text-gray-800 hover:text-blue-500 transition-colors"
+            >
+              BEAUTY
+            </Link>
           </div>
 
           <button

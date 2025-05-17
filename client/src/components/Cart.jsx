@@ -3,52 +3,69 @@ import { addToCart, removeFromCart } from "../features/cartSlice";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 
 const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart.items);
 
+  // Check if the user is authenticated
+    const { user } = useSelector((state) => state.auth);
+   const isAuthenticated = () => {
+    if (!user) {
+      toast.error("Please login to continue");
+      navigate("/login");
+      return false;
+    }
+    return true;
+  };
+
+  // Calculate total price
   const totalPrice = cart.reduce((acc, item) => {
     const cleanPrice =
       parseFloat(item.price?.toString().replace(/[^\d.]/g, "")) || 0;
     return acc + cleanPrice * item.quantity;
   }, 0);
 
+  // Handle placing an order
   const handlePlaceOrder = () => {
+    if (!isAuthenticated()) return; // Ensure user is authenticated
     toast.success("Redirecting to checkout...", { autoClose: 1000 });
     setTimeout(() => navigate("/checkout"), 1200);
   };
 
+  // Handle quantity changes
   const handleQuantityChange = (itemId, newQuantityStr) => {
+    if (!isAuthenticated()) return; // Ensure user is authenticated
+
     const newQuantity = parseInt(newQuantityStr, 10);
     if (isNaN(newQuantity) || newQuantity < 0) return;
 
-    const currentItem = cart.find(item => item._id === itemId);
-    const currentQuantity = currentItem?.quantity || 0;
+    const currentItem = cart.find((item) => item._id === itemId);
+    if (!currentItem) return;
 
-    if (newQuantity > currentQuantity) {
-      for (let i = 0; i < newQuantity - currentQuantity; i++) {
-        dispatch(addToCart(currentItem));
-      }
+    if (newQuantity > currentItem.quantity) {
+      dispatch(addToCart({ ...currentItem, quantity: newQuantity - currentItem.quantity }));
       toast.info("Increased item quantity");
-    } else if (newQuantity < currentQuantity) {
-      for (let i = 0; i < currentQuantity - newQuantity; i++) {
-        dispatch(removeFromCart(itemId));
-      }
+    } else if (newQuantity < currentItem.quantity) {
+      dispatch(removeFromCart({ ...currentItem, quantity: currentItem.quantity - newQuantity }));
       toast.warn("Decreased item quantity");
     }
   };
 
+  // Handle removing an item
   const handleRemoveItem = (itemId) => {
-    const item = cart.find(item => item._id === itemId);
+    if (!isAuthenticated()) return; // Ensure user is authenticated
+
+    const item = cart.find((item) => item._id === itemId);
     if (!item) return;
-    for (let i = 0; i < item.quantity; i++) {
-      dispatch(removeFromCart(itemId));
-    }
+
+    dispatch(removeFromCart(item));
     toast.error("Item removed from cart");
   };
 
+  // Render empty cart message
   if (cart.length === 0) {
     return (
       <div className="flex flex-col justify-center items-center h-screen text-gray-500 text-xl">
@@ -69,6 +86,7 @@ const Cart = () => {
     );
   }
 
+  // Render cart items
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
       <h2 className="text-4xl font-bold mb-10 text-center text-gray-800">
@@ -110,7 +128,7 @@ const Cart = () => {
                   </div>
                   <div className="flex gap-2 items-center">
                     <button
-                      onClick={() => dispatch(removeFromCart(item._id))}
+                      onClick={() => handleQuantityChange(item._id, item.quantity - 1)}
                       className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 disabled:opacity-50"
                       disabled={item.quantity === 0}
                     >
@@ -126,7 +144,7 @@ const Cart = () => {
                       className="w-14 text-center border border-gray-300 rounded"
                     />
                     <button
-                      onClick={() => dispatch(addToCart(item))}
+                      onClick={() => handleQuantityChange(item._id, item.quantity + 1)}
                       className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
                     >
                       +

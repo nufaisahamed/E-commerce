@@ -10,11 +10,12 @@ const Wishlist = () => {
   const dispatch = useDispatch();
   const wishlist = useSelector((state) => state.wishlist.items);
 
+  const { user } = useSelector((state) => state.auth);
+
   const handleAuth = () => {
-    const token = Cookies.get("authToken");
-    if (!token) {
+    if (!user) {
       toast.error("Please login to continue");
-      Navigate("/login");
+      navigate("/login");
       return false;
     }
     return true;
@@ -24,9 +25,8 @@ const Wishlist = () => {
   const handleAddToCart = (product) => {
     if (!handleAuth()) return;
     dispatch(addToCart(product));
-    toast.success(`${product.name} added to cart`);
+   dispatch(removeFromWishlist(product.id));
     navigate("/Cart");
-    
   };
 
   if (wishlist.length === 0) {
@@ -66,7 +66,6 @@ const Wishlist = () => {
               <button
                 onClick={() => {
                   handleAddToCart(item);
-                  // toast.success(`${item.name} added to cart`)
                   toast(`${item.name} Added to Cart`, {
                     icon: "🛒",
                     style: {

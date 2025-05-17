@@ -27,20 +27,14 @@ export default function LoginPage() {
     axiosInstance
       .post('/login', formValues)
       .then((res) => {
-        Cookies.set('user', JSON.stringify(res.data.user), {
-          expires: 7,
-          // secure: true,
-          sameSite: 'Strict',
-        });
-        
         toast.success(res.data.message);
         navigate('/');
       })
       .catch((err) => {
         toast.error(err.response?.data?.message || 'Login failed');
       });
-  };
 
+  };
 
 
   return (
