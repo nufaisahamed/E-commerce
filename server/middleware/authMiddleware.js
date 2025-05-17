@@ -9,7 +9,7 @@ module.exports.verifyToken = (req, res, next) => {
         return res.status(401).json({ message: "No token provide!" });
     }
 
-    jwt.verify(token, process.env.jwt_secret, (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
             console.log(err);
             return res.status(500).json({ message: "Token verification failed!" });
