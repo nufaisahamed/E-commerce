@@ -227,7 +227,6 @@ const Hero = () => {
         </div>
       </div>
       <Grid />
-      <Footer />
     </div>
   );
 };
