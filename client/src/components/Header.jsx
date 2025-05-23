@@ -173,6 +173,7 @@ const Header = () => {
           </button>
         </div>
       </nav>
+      
 
       {isSearchOpen && (
         <div className="bg-gray-50 p-4">
