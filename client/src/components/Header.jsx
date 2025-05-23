@@ -9,7 +9,6 @@ import {
 } from "react-icons/fa";
 import logo from "../assets/img/Logo.svg";
 import { useSelector, useDispatch } from "react-redux";
-import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 import { clearCart } from "../features/cartSlice";
 import { clearWishlist } from "../features/WishSlice";
@@ -30,138 +29,120 @@ const Header = () => {
   const wishlistItems = useSelector((state) => state.wishlist.items);
   const wishlistCount = wishlistItems.length;
 
-  // const user = Cookies.get("user") ? JSON.parse(Cookies.get("user")) : null;
   const { user } = useSelector((state) => state.auth);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleSearch = () => setIsSearchOpen(!isSearchOpen);
 
   const handleLogout = () => {
-    console.log("from logout");
     dispatch(logout());
-    // toast.success("Logged out successfully");
     navigate("/login");
-    // dispatch(clearCart());
-    // dispatch(clearWishlist());
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-md backdrop-filter backdrop-blur-lg bg-opacity-80">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-        <div className="flex items-center lg:w-auto w-full">
-          <Link to="/">
-            <img className="w-25 h-14" src={logo} alt="Logo" />
+    <header className="bg-white shadow-md sticky top-0 z-50 transition-all duration-300 ease-in-out">
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
+        <div className="flex items-center">
+          <Link to="/" className="focus:outline-none">
+            <img className="h-10 w-auto transition-transform transform hover:scale-105" src={logo} alt="E-Commerce Logo" />
           </Link>
         </div>
 
-        <div className="hidden lg:flex flex-row items-center justify-center px-4 py-2 space-x-6">
+        <div className="hidden lg:flex items-center space-x-4">
           <Link
             to="/explore?category=men"
-            className="px-3 py-1 rounded hover:text-blue-500 text-gray-800 transition-colors hover:bg-gray-400"
+            className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 focus:outline-none"
           >
-            MEN
+            Men
           </Link>
           <Link
             to="/explore?category=women"
-            className="px-3 py-1 rounded hover:text-blue-500 text-gray-800 transition-colors"
+            className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 focus:outline-none"
           >
-            WOMEN
+            Women
           </Link>
           <Link
             to="/explore?category=kids"
-            className="px-3 py-1 rounded hover:text-blue-500 text-gray-800 transition-colors"
+            className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 focus:outline-none"
           >
-            KIDS
+            Kids
           </Link>
           <Link
             to="/explore?category=unisex"
-            className="px-3 py-1 rounded hover:text-blue-500 text-gray-800 transition-colors"
+            className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 focus:outline-none"
           >
-            UNISEX
+            Unisex
           </Link>
           <Link
             to="/beauty"
-            className="px-3 py-1 rounded hover:text-blue-500 text-gray-800 transition-colors"
+            className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 focus:outline-none"
           >
-            BEAUTY
+            Beauty
           </Link>
         </div>
 
-        <div className="flex items-center gap-4 relative">
+        <div className="flex items-center space-x-3">
           <button
             onClick={toggleSearch}
-            className="text-gray-600 hover:text-blue-500 p-2 rounded-full transition-colors"
+            className="text-gray-600 hover:text-blue-500 focus:outline-none transition-colors duration-200 relative"
           >
-            <FaSearch size={20} />
+            <FaSearch className="h-5 w-5" />
           </button>
 
-          <Link to="/wishlist">
-            <button className="text-gray-600 hover:text-blue-500 p-2 rounded-full transition-colors relative">
-              <FaHeart size={20} />
+          <Link to="/wishlist" className="relative focus:outline-none">
+            <button className="text-gray-600 hover:text-red-500 focus:outline-none transition-colors duration-200 relative">
+              <FaHeart className="h-5 w-5" />
               {wishlistCount > 0 && (
-                <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute top-[-0.2rem] right-[-0.2rem] bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
                   {wishlistCount}
                 </span>
               )}
             </button>
           </Link>
 
-          <Link to="/cart">
-            <button className="text-gray-600 hover:text-blue-500 p-2 rounded-full transition-colors relative">
-              <FaShoppingCart size={20} />
+          <Link to="/cart" className="relative focus:outline-none">
+            <button className="text-gray-600 hover:text-green-500 focus:outline-none transition-colors duration-200 relative">
+              <FaShoppingCart className="h-5 w-5" />
               {totalQuantity > 0 && (
-                <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute top-[-0.2rem] right-[-0.2rem] bg-green-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
                   {totalQuantity}
                 </span>
               )}
             </button>
           </Link>
 
-          <button
-            onClick={toggleMenu}
-            className="lg:hidden text-gray-600 hover:text-gray-800 p-2 rounded-full transition-colors"
-          >
-            {!isMenuOpen ? <FaBars size={20} /> : <FaTimes size={20} />}
-          </button>
-
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden lg:flex items-center">
             {user ? (
               <div className="relative">
-                <div
-                  className="flex items-center gap-2 cursor-pointer"
+                <button
                   onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+                  className="flex items-center gap-2 focus:outline-none"
                 >
                   {user.avatar ? (
                     <img
                       src={user.avatar}
                       alt="Profile"
-                      className="w-8 h-8 rounded-full object-cover border"
+                      className="w-8 h-8 rounded-full object-cover border border-gray-300"
                     />
                   ) : (
-                    <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-sm text-white">
+                    <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-sm text-white font-semibold">
                       {user.fullname.charAt(0).toUpperCase()}
                     </div>
                   )}
-                  <span className="text-gray-800 font-medium">
+                  <span className="text-gray-800 font-medium text-sm">
                     Hi, {user.fullname.split(" ")[0]}
                   </span>
-                </div>
+                </button>
 
                 {showProfileDropdown && (
-                  <div className="absolute right-0 mt-2 w-52 bg-white shadow-md rounded-lg p-4 z-50">
-                    <img
-                      src={user.avatar}
-                      alt=""
-                      className="h-[150px] w-[180px]"
-                    />
-                    <p className="text-sm font-medium text-gray-800">
-                      {user.fullname}
-                    </p>
-                    <p className="text-sm text-gray-500 mb-2">{user.email}</p>
-                    <hr className="my-2" />
+                  <div className="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-md overflow-hidden z-50">
+                    <div className="px-4 py-3 border-b">
+                      <p className="text-sm font-semibold text-gray-800">{user.fullname}</p>
+                      <p className="text-xs text-gray-500">{user.email}</p>
+                    </div>
                     <button
                       onClick={handleLogout}
-                      className=" hover:bg-red-700 w-full text-white border rounded-3xl text-center bg-red-500"
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none"
                     >
                       Logout
                     </button>
@@ -169,100 +150,118 @@ const Header = () => {
                 )}
               </div>
             ) : (
-              <>
-                <Link to="/login">
-                  <button className="border rounded-2xl px-3 py-1 text-gray-800 hover:bg-gray-100 transition-colors">
+              <div className="flex items-center space-x-2">
+                <Link to="/login" className="focus:outline-none">
+                  <button className="bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 font-medium py-2 px-4 rounded-md transition-colors duration-200 text-sm">
                     Login
                   </button>
                 </Link>
-                <Link to="/signup">
-                  <button className="bg-blue-600 text-white rounded-2xl px-3 py-1 hover:bg-blue-700 transition-colors">
+                <Link to="/signup" className="focus:outline-none">
+                  <button className="bg-blue-600 text-white font-medium py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200 text-sm">
                     Signup
                   </button>
                 </Link>
-              </>
+              </div>
             )}
           </div>
+
+          <button
+            onClick={toggleMenu}
+            className="lg:hidden text-gray-600 hover:text-gray-800 focus:outline-none transition-colors duration-200"
+          >
+            {!isMenuOpen ? <FaBars className="h-6 w-6" /> : <FaTimes className="h-6 w-6" />}
+          </button>
         </div>
       </nav>
 
       {isSearchOpen && (
-        <div className="w-full bg-white p-4">
+        <div className="bg-gray-50 p-4">
           <input
             type="text"
             placeholder="Search products..."
-            className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
           />
         </div>
       )}
 
       {isMenuOpen && (
-        <div className="lg:hidden bg-white shadow-lg p-4">
+        <div className="lg:hidden bg-white shadow-md p-4">
           <div className="flex justify-between items-center mb-4">
             {user ? (
-              <>
-                <span className="text-gray-800 font-medium">
+              <div className="flex items-center space-x-3">
+                {user.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt="Profile"
+                    className="w-8 h-8 rounded-full object-cover border border-gray-300"
+                  />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-sm text-white font-semibold">
+                    {user.fullname.charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <span className="text-gray-800 font-medium text-sm">
                   Hi, {user.fullname.split(" ")[0]}
                 </span>
                 <button
                   onClick={handleLogout}
-                  className="border px-3 py-1 rounded-2xl text-gray-800 hover:bg-gray-100 transition-colors"
+                  className="bg-red-500 text-white font-medium py-2 px-4 rounded-md hover:bg-red-600 transition-colors duration-200 text-sm focus:outline-none"
                 >
                   Logout
                 </button>
-              </>
+              </div>
             ) : (
-              <>
-                <Link to="/login">
-                  <button className="border rounded-2xl px-3 py-1 text-gray-800 hover:bg-gray-100 transition-colors">
+              <div className="flex items-center space-x-2">
+                <Link to="/login" className="focus:outline-none">
+                  <button className="bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 font-medium py-2 px-4 rounded-md transition-colors duration-200 text-sm">
                     Login
                   </button>
                 </Link>
-                <Link to="/signup">
-                  <button className="bg-blue-600 text-white rounded-2xl px-3 py-1 hover:bg-blue-700 transition-colors">
+                <Link to="/signup" className="focus:outline-none">
+                  <button className="bg-blue-600 text-white font-medium py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200 text-sm">
                     Signup
                   </button>
                 </Link>
-              </>
+              </div>
             )}
           </div>
 
-          <div className="mt-4 space-y-2">
+          <div className="space-y-2">
             <Link
               to="/explore?category=men"
-              className="block w-full px-3 py-1 rounded text-gray-800 hover:text-blue-500 transition-colors"
+              className="block py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 focus:outline-none"
             >
-              MEN
+              Men
             </Link>
             <Link
               to="/explore?category=women"
-              className="block w-full px-3 py-1 rounded text-gray-800 hover:text-blue-500 transition-colors"
+              className="block py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 focus:outline-none"
             >
-              WOMEN
+              Women
             </Link>
             <Link
               to="/explore?category=kids"
-              className="block w-full px-3 py-1 rounded text-gray-800 hover:text-blue-500 transition-colors"
+              className="block py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 focus:outline-none"
             >
-              KIDS
+              Kids
             </Link>
             <Link
               to="/explore?category=unisex"
-              className="block w-full px-3 py-1 rounded text-gray-800 hover:text-blue-500 transition-colors"
+              className="block py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 focus:outline-none"
             >
-              UNISEX
+              Unisex
             </Link>
             <Link
               to="/beauty"
-              className="block w-full px-3 py-1 rounded text-gray-800 hover:text-blue-500 transition-colors"
+              className="block py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 focus:outline-none"
             >
-              BEAUTY
+              Beauty
             </Link>
           </div>
 
           <button
             onClick={toggleSearch}
-            className="block w-full px-3 py-1 rounded bg-gray-100 text-gray-800 mt-4"
+            className="block w-full bg-gray-100 text-gray-700 font-medium py-2 px-4 rounded-md hover:bg-gray-200 transition-colors duration-200 mt-4 focus:outline-none"
           >
             Search
           </button>
