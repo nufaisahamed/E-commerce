@@ -96,32 +96,38 @@ const Hero = () => {
   const currentTesti = testimonials[testiIndex];
 
   const handleNewsletterSubmit = (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!email) {
-      setNewsletterStatus("Please enter a valid email address.");
-      return;
-    }
+  if (!email) {
+    setNewsletterStatus("Please enter a valid email address.");
+    return;
+  }
 
-    const serviceID = "service_p7kn1ed";
-    const templateID = "template_7ofxzw4";
-    const publicKey = "AZhDoJvxJBZtMJI3N";
+  const serviceID = "service_p7kn1ed";
+  const adminTemplateID = "template_7ofxzw4";      // Your admin notification template
+  const autoReplyTemplateID = "template_ld296ww";  // Your auto-reply template ID
+  const publicKey = "AZhDoJvxJBZtMJI3N";
 
-    const templateParams = {
-      user_email: email,
-    };
+  const adminParams = { user_email: email };
+  const autoReplyParams = { to_email: email, user_email: email }; // Make sure your auto-reply template uses `{{to_email}}` as recipient
 
-    emailjs
-      .send(serviceID, templateID, templateParams, publicKey)
-      .then(() => {
-        setNewsletterStatus("Thanks for subscribing!");
-        setEmail("");
-      })
-      .catch((error) => {
-        console.error("EmailJS Error:", error);
-        setNewsletterStatus("Failed to subscribe. Please try again later.");
-      });
-  };
+  // Send notification email to admin first
+  emailjs.send(serviceID, adminTemplateID, adminParams, publicKey)
+    .then(() => {
+      // Then send auto-reply email to subscriber
+      return emailjs.send(serviceID, autoReplyTemplateID, autoReplyParams, publicKey);
+    })
+    .then(() => {
+      setNewsletterStatus("Thanks for subscribing! Confirmation email sent.");
+      setEmail("");
+    })
+    .catch((error) => {
+      console.error("EmailJS Error:", error);
+      setNewsletterStatus("Failed to subscribe. Please try again later.");
+    });
+};
+
+
 
   return (
     <div className="relative overflow-hidden">
