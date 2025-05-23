@@ -77,14 +77,14 @@ const Footer = () => {
             </p>
             <div className="flex flex-col space-y-3">
               <Link
-                to="#"
+                to="https://apps.apple.com/us/app/amazon-shopping/id297606951"
                 className="flex items-center bg-white border border-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-100 transition-all text-sm"
               >
                 <IoLogoAppleAppstore className="mr-2 text-lg" />
                 Download on iOS
               </Link>
               <Link
-                to="#"
+                to="https://play.google.com/store/search?q=amazon&c=apps"
                 className="flex items-center bg-white border border-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-100 transition-all text-sm"
               >
                 <AiFillMobile className="mr-2 text-lg" />
